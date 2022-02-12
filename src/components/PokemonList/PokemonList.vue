@@ -1,6 +1,10 @@
 <template>
   <div class="pokemonlist">
-    <p>pokemon list</p>
+    <div class="pokecard" v-for="(pok, i) in pokeData" :key="i">
+      <span>{{ pok.entry_number }}</span>
+      <span>image</span>
+      <span>{{ pok.pokemon_species.name }} </span>
+    </div>
   </div>
 </template>
 
@@ -10,28 +14,40 @@ import { Pokemon } from "../types";
 import { api } from "../../services/api";
 import axios from "axios";
 
-const pokeData = ref<Pokemon[]>();
+const pokeData = ref<any>();
 
-axios.get("https://pokeapi.co/api/v2/pokemon/").then(response => {
-  const basicInfo = response.data.results;
-  const promises = basicInfo.map((result: any) => {
-    return axios.get(result.url)
+axios
+  .get("https://pokeapi.co/api/v2/pokedex/2/")
+  .then((res) => {
+    let pokempodons = res.data.pokemon_entries;
+    return (pokeData.value = pokempodons);
   })
-  Promise.all(promises).then(response => {
-    response.forEach((pokemon: any) => {
-      return pokeData.value = pokemon.data
-    })
-  })
-});
-
-console.log(pokeData.value)
-
+  .catch((err) => {
+    console.log(err);
+  });
 </script>
 
-<style>
+<style lang="scss" scoped>
 .pokemonlist {
   display: flex;
   flex-direction: row;
-  background-color: "blue";
+  width: 100vw;
+  height: 200px;
+  .pokecard {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: rgb(240, 240, 240);
+    width: 100%;
+    min-width: 100px;
+    border-radius: 12px;
+    padding: 5px;
+    margin-left: 1rem;
+    box-shadow: 1px 0.2px 3px rgb(180, 180, 180);
+    span {
+      font-weight: bold;
+      font-size: 16px;
+    }
+  }
 }
 </style>

@@ -1,6 +1,5 @@
 <template>
   <div class="layout">
-    <p>layout component</p>
     <PokemonList />
     <PokemonDetails />
     <Pokeball />
@@ -13,10 +12,10 @@ import PokemonDetails from "../components/PokemonDetails/PokemonDetails.vue";
 import PokemonList from "../components/PokemonList/PokemonList.vue";
 </script>
 
-<style>
+<style lang="scss" scoped>
 .layout {
   display: flex;
   flex-direction: column;
-  background-color: "green";
+  padding: 1rem;
 }
 </style>
