@@ -1,8 +1,8 @@
 <template>
   <div class="layout">
-    <PokemonList />
     <PokemonDetails />
     <Pokeball />
+    <PokemonList />
   </div>
 </template>
 
