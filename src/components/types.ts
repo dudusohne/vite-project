@@ -3,4 +3,6 @@ export interface Pokemon {
     description?: number;
     height?: string;
     location?: string;
+    pokemon_species?: string | number;
+    entry_number?: number | string;
 }
