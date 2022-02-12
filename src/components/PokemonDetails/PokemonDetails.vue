@@ -1,6 +1,5 @@
 <template>
   <div class="pokemondetails">
-    <p>pokemon details</p>
   </div>
 </template>
 
@@ -11,6 +10,6 @@
 .pokemondetails {
     display: flex;
     flex-direction: row;
-    background-color: 'yellow';
+    background-color: yellow;
 }
 </style>
