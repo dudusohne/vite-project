@@ -10,6 +10,7 @@
       <img :src="getPokemonImg(pokemon.entry_number)" alt="image" />
       <span>{{ pokemon.pokemon_species.name.toUpperCase() }}</span>
     </button>
+    
   </div>
 </template>
 
@@ -75,5 +76,12 @@ function getPokemonImg(entryNumber: number): any {
       width: 100px;
     }
   }
+}
+#modal {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  border: 1px solid gray;
+  background-color: white;
 }
 </style>

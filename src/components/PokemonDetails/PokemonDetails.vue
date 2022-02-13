@@ -1,15 +1,15 @@
 <template>
-  <div class="pokemondetails">
-  </div>
+    
 </template>
 
 <script setup lang="ts">
+import { reactive } from "vue";
+
+const displayModal = reactive({
+  displayModal: false
+})
 </script>
 
-<style>
-.pokemondetails {
-    display: flex;
-    flex-direction: row;
-    background-color: yellow;
-}
+<style lang="scss" scoped>
+
 </style>
