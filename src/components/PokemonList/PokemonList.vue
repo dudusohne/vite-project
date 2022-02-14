@@ -54,7 +54,6 @@ function getPokemonImg(entryNumber: number): any {
   grid-template-columns: repeat(5, 1fr);
   grid-auto-rows: minmax(90px, auto);
   row-gap: 1rem;
-  overflow-y: scroll;
   .pokecard {
     display: flex;
     flex-direction: column;

@@ -1,7 +1,9 @@
 <template>
   <div class="header">
-    <img class="logo" src="./assets/pokemonlogo.png" alt="pokemon logo" />
-    <p>ESCOLHA OS MEMBROS DO SEU TIME:</p>
+    <div class="wrapper">
+      <img class="logo" src="./assets/pokemonlogo.png" alt="pokemon logo" />
+      <span>CHALLENGE</span>
+    </div>
   </div>
   <Layout />
 </template>
@@ -20,16 +22,29 @@ import Layout from "./Layout/Layout.vue";
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 180px;
+  height: 100%;
   padding: 2px 3px 1px 30px;
   border-bottom: 1px solid rgb(243, 243, 243);
   align-self: center;
-  span {
-    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-      "Lucida Sans", Arial, sans-serif;
-    font-weight: bold;
-    font-size: 22px;
+  
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    span {
+      font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+        "Lucida Sans", Arial, sans-serif;
+      font-weight: bold;
+      font-size: 22px;
+      color: rgb(19, 111, 187);
+      letter-spacing: 1.2px;
+    }
+    .logo {
+      width: 15rem;
+    }
   }
+
   p {
     font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
       "Lucida Sans", Arial, sans-serif;
@@ -37,8 +52,5 @@ import Layout from "./Layout/Layout.vue";
     font-size: 22px;
     margin-left: 2rem;
   }
-}
-.logo {
-  width: 15rem;
 }
 </style>
