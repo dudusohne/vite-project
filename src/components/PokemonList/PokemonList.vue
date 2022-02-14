@@ -8,9 +8,10 @@
     >
       <span>{{ pokemon.entry_number }}</span>
       <img :src="getPokemonImg(pokemon.entry_number)" alt="image" />
-      <span>{{ pokemon.pokemon_species.name.toUpperCase() }}</span>
+      <span class="pokename">{{
+        pokemon.pokemon_species.name.toUpperCase()
+      }}</span>
     </button>
-    
   </div>
 </template>
 
@@ -50,7 +51,8 @@ function getPokemonImg(entryNumber: number): any {
 <style lang="scss" scoped>
 .pokemonlist {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: minmax(90px, auto);
   row-gap: 1rem;
   overflow-y: scroll;
   .pokecard {
@@ -74,6 +76,11 @@ function getPokemonImg(entryNumber: number): any {
     img {
       align-self: center;
       width: 100px;
+    }
+    .pokename {
+      font-size: 18px;
+      color: rgb(86, 87, 86);
+      align-self: center;
     }
   }
 }
