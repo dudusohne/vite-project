@@ -1,21 +1,7 @@
 <template>
-  <v-app>
-    <v-main>
-    </v-main>
-  </v-app>
+  <layout />
 </template>
 
-<script>
-
-export default {
-  name: 'App',
-
-  components: {
-    HelloWorld,
-  },
-
-  data: () => ({
-    //
-  }),
-}
+<script setup lang="ts">
+import Layout from "./Layout/Layout.vue";
 </script>

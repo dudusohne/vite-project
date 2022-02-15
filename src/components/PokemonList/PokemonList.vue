@@ -1,18 +1,6 @@
 <template>
   <div class="pokemonlist grid-container">
-    <!-- <v-card color="#385F73" theme="dark">
-      <v-card-title class="text-h5"> Unlimited music now </v-card-title>
-
-      <v-card-subtitle
-        >Listen to your favorite artists and albums whenever and wherever,
-        online and offline.</v-card-subtitle
-      >
-
-      <v-card-actions>
-        <v-btn variant="text"> Listen Now </v-btn>
-      </v-card-actions>
-    </v-card> -->
-    <!-- <button
+    <button
       type="button"
       class="pokecard"
       v-for="(pokemon, i) in pokeData"
@@ -23,7 +11,7 @@
       <span class="pokename">{{
         pokemon.pokemon_species.name.toUpperCase()
       }}</span>
-    </button> -->
+    </button>
   </div>
 </template>
 
