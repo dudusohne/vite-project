@@ -1,7 +1,7 @@
 <template>
-  <div class="pokemonlist">
+  <div class="pokemonlist q-gutter-md">
     <!-- POKEMON CARD -->
-    <q-card light bordered class="bg-grey-3 my-card" v-for="(pokemon, i) in pokeData" :key="i">
+    <q-card light bordered class="bg-grey-3 my-card" v-for="(pokemon, i) in pokeData" :key="i" @click="details(pokemon.pokemon_species.url)">
       <q-card-section>
         <div class="card-section">
           <span>{{ pokemon.entry_number }}</span>
@@ -50,7 +50,7 @@
                     style="font-size: 28px; font-weight: bold; color: rgb(255, 255, 255)"
                   >{{ pokemon.base_experience }}</p>
                 </InfoCard>
-                
+
                 <InfoCard>
                   <span style="color: rgb(189, 189, 189)">ABILITIES:</span>
                   <q-separator />
@@ -127,7 +127,7 @@ interface Pokemon {
   types?: any;
 }
 
-const pokeData = ref<any>();
+const pokeData = ref<Pokemon>();
 
 onMounted(() => {
   pokemonList();
@@ -171,7 +171,6 @@ function details(url: any) {
       axios
         .get(`https://pokeapi.co/api/v2/pokemon/${res.data.id}`)
         .then((res) => {
-          console.log(res)
           pokemon.abilities = res.data.abilities;
           pokemon.types = res.data.types;
           pokemon.weight = res.data.weight;
