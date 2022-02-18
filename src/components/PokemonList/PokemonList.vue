@@ -1,7 +1,7 @@
 <template>
   <div class="pokemonlist q-gutter-md">
     <!-- POKEMON CARD -->
-    <q-card light bordered class="bg-grey-3 my-card" v-for="(pokemon, i) in pokeData" :key="i" @click="details(pokemon.pokemon_species.url)">
+    <q-card light bordered class="bg-grey-3 my-card" v-for="(pokemon, i) in pokeData" :key="i" @click="details(pokemon.pokemon_species.url)" :pokemon="pokemon.id">
       <q-card-section>
         <div class="card-section">
           <span>{{ pokemon.entry_number }}</span>
@@ -96,7 +96,7 @@
           </q-card-section>
 
           <q-card-section class="q-pt-none">
-            <q-btn color="black" label="ADICIONAR AO TIME" style="margin-right: 10px;" />
+            <q-btn color="black" label="ADICIONAR AO TIME" style="margin-right: 10px;" @click="clicked" />
             <q-btn color="black" label="FECHAR" v-close-popup />
           </q-card-section>
         </div>
@@ -106,25 +106,24 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, defineEmits } from "vue";
 import axios from "axios";
 import InfoCard from "../InfoCard/InfoCard.vue";
 
 const bar2 = ref(false);
 
 interface Pokemon {
-  entry_number?: any;
+  entry_number?: number;
   pokemon_species?: {
     name?: string;
     url?: string;
   };
-  color?: any;
-  pokemonImg?: any;
+  color?: string;
   description?: any;
-  abilities?: any;
-  height?: any;
-  weight?: any;
-  types?: any;
+  abilities?: string;
+  height?: number;
+  weight?: number;
+  types?: string;
 }
 
 const pokeData = ref<Pokemon>();
@@ -145,7 +144,7 @@ function pokemonList() {
     });
 }
 
-function getPokemonImg(entryNumber: number): any {
+function getPokemonImg(entryNumber: number): string {
   var str = "" + entryNumber;
   var pad = "000";
   const ans = pad.substring(0, pad.length - str.length) + str;
@@ -155,7 +154,7 @@ function getPokemonImg(entryNumber: number): any {
 
 let pokemon: any = [];
 
-function details(url: any) {
+function details(url: string) {
   axios
     .get(url)
     .then((res) => {
@@ -186,6 +185,16 @@ function details(url: any) {
       console.log(err);
     });
   bar2.value = true;
+}
+
+function handleAddToList(pokemon: any) {
+console.log(pokemon)
+}
+
+const emit = defineEmits(['clicked'])
+
+function clicked() {
+      emit("clicked");
 }
 </script>
 
