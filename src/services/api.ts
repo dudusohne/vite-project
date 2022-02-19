@@ -8,7 +8,13 @@ export default {
   allPokemons() {
     return api.get(`pokedex/2/`);
   },
-  uniquePokemon() {
-
+  urlPokemon(url: string) {
+    return api.get(url);
+  },
+  uniquePokemon(id: number) {
+    return api.get(`pokemon-species/${id}`);
+  },
+  detailsPokemon(id: number) {
+    return api.get(`pokemon/${id}`);
   }
-}
+};

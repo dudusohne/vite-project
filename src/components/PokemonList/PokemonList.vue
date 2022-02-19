@@ -35,7 +35,7 @@
       :abilities="pokemon.abilities"
       :types="pokemon.types"
       :description="pokemon.description"
-    /> -->
+    />-->
     <!-- MODAL -->
     <q-dialog v-model="bar2" transition-show="slide-down" transition-hide="slide-down">
       <q-card class="text-white">
@@ -141,27 +141,35 @@ import axios from "axios";
 import InfoCard from "../InfoCard/InfoCard.vue";
 import Modal from "../Modal/Modal.vue";
 import { Pokemon } from '../types';
+import api from '../../services/api';
 
 const bar2 = ref(false);
 
-const pokeData = ref<any>();
+const pokeData = ref<Pokemon>();
 
 onMounted(() => {
   pokemonList();
 });
 
+// const pokemonList = async () => {
+//   const response = await api.allPokemons()
+//   pokeData.value = response.data.pokemon_entries;
+// };
+
+/*
+* Bring all pokemons from API
+*/
 function pokemonList() {
-  axios
-    .get("https://pokeapi.co/api/v2/pokedex/2/")
-    .then((res) => {
-      let pokemonData = res.data.pokemon_entries;
-      return (pokeData.value = pokemonData);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  api.allPokemons().then((res) => {
+    return pokeData.value = res.data.pokemon_entries;
+  }).catch((err) => {
+    console.log(err);
+  });
 }
 
+/*
+* Handle's the pokemon image render
+*/
 function getPokemonImg(entryNumber: number): string {
   var str = "" + entryNumber;
   var pad = "000";
@@ -200,21 +208,18 @@ const pokemon = reactive<Pokemon>({
 * Handle's the pokemon details load/render
 */
 function details(url: string) {
-  axios
-    .get(url)
+  api.urlPokemon(url)
     .then((res) => {
       pokemon.color = res.data.color.name;
-      axios
-        .get(`https://pokeapi.co/api/v2/pokemon-species/${res.data.id}`)
+      api.uniquePokemon(res.data.id)
         .then((res) => {
           const textResponses = res.data.flavor_text_entries.filter(
-            (element: any) => element.language.name == "en"
+            (element: string | any) => element.language.name == "en"
           );
           pokemon.description = textResponses[0].flavor_text;
         });
-      axios
-        .get(`https://pokeapi.co/api/v2/pokemon/${res.data.id}`)
-        .then((res: any) => {
+      api.detailsPokemon(res.data.id)
+        .then((res) => {
           pokemon.abilities = res.data.abilities;
           pokemon.types = res.data.types;
           pokemon.weight = res.data.weight;
