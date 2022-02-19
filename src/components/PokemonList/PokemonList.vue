@@ -137,47 +137,13 @@
 
 <script setup lang="ts">
 import { onMounted, ref, defineEmits, reactive } from "vue";
-import axios from "axios";
 import InfoCard from "../InfoCard/InfoCard.vue";
 import Modal from "../Modal/Modal.vue";
 import { Pokemon } from '../types';
 import api from '../../services/api';
 
 const bar2 = ref(false);
-
 const pokeData = ref<Pokemon>();
-
-onMounted(() => {
-  pokemonList();
-});
-
-// const pokemonList = async () => {
-//   const response = await api.allPokemons()
-//   pokeData.value = response.data.pokemon_entries;
-// };
-
-/*
-* Bring all pokemons from API
-*/
-function pokemonList() {
-  api.allPokemons().then((res) => {
-    return pokeData.value = res.data.pokemon_entries;
-  }).catch((err) => {
-    console.log(err);
-  });
-}
-
-/*
-* Handle's the pokemon image render
-*/
-function getPokemonImg(entryNumber: number): string {
-  var str = "" + entryNumber;
-  var pad = "000";
-  const ans = pad.substring(0, pad.length - str.length) + str;
-  const url = `https://raw.githubusercontent.com/oscarcz7/poke_api/master/src/assets/pokemon/${ans}.png`;
-  return url;
-}
-
 const pokemon = reactive<Pokemon>({
   id: 0,
   name: "",
@@ -204,37 +170,57 @@ const pokemon = reactive<Pokemon>({
   description: '',
 });
 
+onMounted(() => {
+  pokemonList()
+});
+
+/*
+* Bring all pokemons from API
+*/
+const pokemonList = async () => {
+  const response = await api.allPokemons()
+  pokeData.value = response.data.pokemon_entries;
+};
+
+/*
+* Handle's the pokemon image render
+*/
+function getPokemonImg(entryNumber: number): string {
+  var str = "" + entryNumber;
+  var pad = "000";
+  const ans = pad.substring(0, pad.length - str.length) + str;
+  const url = `https://raw.githubusercontent.com/oscarcz7/poke_api/master/src/assets/pokemon/${ans}.png`;
+  return url;
+}
+
 /*
 * Handle's the pokemon details load/render
 */
-function details(url: string) {
-  api.urlPokemon(url)
-    .then((res) => {
-      pokemon.color = res.data.color.name;
-      api.uniquePokemon(res.data.id)
-        .then((res) => {
-          const textResponses = res.data.flavor_text_entries.filter(
-            (element: string | any) => element.language.name == "en"
-          );
-          pokemon.description = textResponses[0].flavor_text;
-        });
-      api.detailsPokemon(res.data.id)
-        .then((res) => {
-          pokemon.abilities = res.data.abilities;
-          pokemon.types = res.data.types;
-          pokemon.weight = res.data.weight;
-          pokemon.height = res.data.height;
-          pokemon.name = res.data.name;
-          pokemon.id = res.data.id;
-          pokemon.types = res.data.types;
-          pokemon.base_experience = res.data.base_experience;
-        });
-    })
-    .catch((err) => {
-      console.log('catch erro: ', err);
-    });
-  bar2.value = true;
-}
+async function details(url: string) {
+  try {
+    const urlResponse = await api.urlPokemon(url)
+    pokemon.color = urlResponse.data.color.name;
+
+    const descResponse = await api.uniquePokemon(urlResponse.data.id)
+    const textResponses = descResponse.data.flavor_text_entries.filter(
+      (element: string | any) => element.language.name == "en"
+    );
+    pokemon.description = textResponses[0].flavor_text;
+
+    const pokemonResponse = await api.detailsPokemon(urlResponse.data.id)
+    pokemon.abilities = pokemonResponse.data.abilities;
+    pokemon.types = pokemonResponse.data.types;
+    pokemon.weight = pokemonResponse.data.weight;
+    pokemon.height = pokemonResponse.data.height;
+    pokemon.name = pokemonResponse.data.name;
+    pokemon.id = pokemonResponse.data.id;
+    pokemon.types = pokemonResponse.data.types;
+    pokemon.base_experience = pokemonResponse.data.base_experience;
+    bar2.value = true;
+  } catch (err) {
+    console.log('catch erro: ', err);
+  }
+};
 
 const emit = defineEmits(['clicked'])
 
