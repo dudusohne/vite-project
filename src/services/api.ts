@@ -1,5 +1,14 @@
 import axios from "axios";
 
-export const api = axios.create({
-  baseURL: `https://pokeapi.co/api/v2/pokemon?limit=20`,
+const api = axios.create({
+  baseURL: `https://pokeapi.co/api/v2/`,
 });
+
+export default {
+  allPokemons() {
+    return api.get(`pokedex/2/`);
+  },
+  uniquePokemon() {
+
+  }
+}

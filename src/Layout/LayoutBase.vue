@@ -1,7 +1,7 @@
 <template>
   <div class="layout-base">
     <Pokeball />
-    <PokemonList @clicked="handleAddItem()" />
+    <PokemonList />
   </div>
 </template>
 
@@ -9,15 +9,6 @@
 import Pokeball from "../components/Pokeball/Pokeball.vue";
 import PokemonList from "../components/PokemonList/PokemonList.vue";
 
-interface Props {
-  pokemonId: number;
-}
-
-const props = defineProps<Props>()
-
-function handleAddItem() {
-  console.log(props.pokemonId)
-}
 </script>
 
 <style lang="scss" scoped>
