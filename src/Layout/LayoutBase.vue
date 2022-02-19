@@ -1,12 +1,12 @@
 <template>
   <div class="layout-base">
-    <Pokeball />
+    <!-- <Pokeball /> -->
     <PokemonList />
   </div>
 </template>
 
 <script setup lang="ts">
-import Pokeball from "../components/Pokeball/Pokeball.vue";
+// import Pokeball from "../components/Pokeball/Pokeball.vue";
 import PokemonList from "../components/PokemonList/PokemonList.vue";
 
 </script>

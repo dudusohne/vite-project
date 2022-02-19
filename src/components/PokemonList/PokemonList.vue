@@ -1,5 +1,10 @@
 <template>
   <div class="pokemonlist q-gutter-md">
+    <div class="pokeball">
+      <!-- <img src="../../assets/ash.png" alt="ash" /> -->
+      <p v-for="t in team">{{ t }}</p>
+      <!-- <img src="../../assets/squirtle.png" alt="squirtle" /> -->
+    </div>
     <!-- POKEMON CARD -->
     <q-card
       light
@@ -26,7 +31,7 @@
       </q-card-actions>
     </q-card>
     <!-- <Modal
-      v-model="bar2"
+      v-model="modal"
       :id="pokemon.id"
       :name="pokemon.name"
       :base_experience="pokemon.base_experience"
@@ -37,7 +42,7 @@
       :description="pokemon.description"
     />-->
     <!-- MODAL -->
-    <q-dialog v-model="bar2" transition-show="slide-down" transition-hide="slide-down">
+    <q-dialog v-model="modal" transition-show="slide-down" transition-hide="slide-down">
       <q-card class="text-white">
         <div :style="{ 'background-color': pokemon.color }">
           <q-bar>
@@ -125,7 +130,7 @@
               color="black"
               label="ADICIONAR AO TIME"
               style="margin-right: 10px;"
-              @click="clicked"
+              @click="handleAdd()"
             />
             <q-btn color="black" label="FECHAR" v-close-popup />
           </q-card-section>
@@ -142,7 +147,9 @@ import Modal from "../Modal/Modal.vue";
 import { Pokemon } from '../types';
 import api from '../../services/api';
 
-const bar2 = ref(false);
+const modal = ref(false);
+// const team = ref<Pokemon[]>()
+let team = ref<Pokemon>()
 const pokeData = ref<Pokemon>();
 const pokemon = reactive<Pokemon>({
   id: 0,
@@ -174,6 +181,12 @@ onMounted(() => {
   pokemonList()
 });
 
+function handleAdd() {
+  // team.value.push(pokemon)
+  team.value = pokemon;
+  console.log(team.value);
+  modal.value = false;
+}
 /*
 * Bring all pokemons from API
 */
@@ -216,7 +229,7 @@ async function details(url: string) {
     pokemon.id = pokemonResponse.data.id;
     pokemon.types = pokemonResponse.data.types;
     pokemon.base_experience = pokemonResponse.data.base_experience;
-    bar2.value = true;
+    modal.value = true;
   } catch (err) {
     console.log('catch erro: ', err);
   }
@@ -235,6 +248,33 @@ function clicked() {
   flex-wrap: wrap;
   flex-grow: 1;
   justify-content: center;
+
+  .pokeball {
+    display: flex;
+    flex-direction: row;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    min-height: 100px;
+    padding: 0 0 0 1.2rem;
+    margin-bottom: 1rem;
+    justify-content: space-between;
+    background-color: rgba(255, 255, 255, 0.459);
+    padding: 1rem 0 1rem 0;
+    z-index: 10;
+
+    p {
+      font-size: 1.1rem;
+      font-weight: medium;
+      color: rgb(136, 136, 136);
+    }
+
+    img {
+      height: 100px;
+      border-radius: 12px;
+      margin-right: 1.2rem;
+    }
+  }
 
   .card-section {
     display: flex;
