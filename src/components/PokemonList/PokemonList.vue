@@ -1,37 +1,24 @@
 <template>
   <div class="pokemonlist q-gutter-md">
     <div class="pokeball">
-      <!-- <img src="../../assets/ash.png" alt="ash" /> -->
+      <img src="../../assets/ash.png" alt="ash" />
       <p v-for="t in team">{{ t }}</p>
       <!-- <img src="../../assets/squirtle.png" alt="squirtle" /> -->
     </div>
     <!-- POKEMON CARD -->
-    <q-card
-      light
-      bordered
-      class="bg-grey-3 my-card"
+    <PokeCard
       v-for="(pokemon, i) in pokeData"
       :key="i"
+      :pokemon="pokemon"
+      :entry_number="pokemon.entry_number"
+      :img="getPokemonImg(pokemon.entry_number)"
+      :pokemon_species="pokemon.pokemon_species.name.toUpperCase()"
       @click="details(pokemon.pokemon_species.url)"
-      :pokemon="pokemon.id"
-    >
-      <q-card-section>
-        <div class="card-section">
-          <span>{{ pokemon.entry_number }}</span>
-          <img :src="getPokemonImg(pokemon.entry_number)" alt="image" />
-          <span class="pokename">
-            {{
-              pokemon.pokemon_species.name.toUpperCase()
-            }}
-          </span>
-        </div>
-      </q-card-section>
-      <q-card-actions>
-        <q-btn color="blue" label="VER DETALHES" @click="details(pokemon.pokemon_species.url)" />
-      </q-card-actions>
-    </q-card>
-    <!-- <Modal
+    />
+    <!-- MODAL -->
+    <Modal
       v-model="modal"
+      :pokemon="pokemon"
       :id="pokemon.id"
       :name="pokemon.name"
       :base_experience="pokemon.base_experience"
@@ -40,121 +27,29 @@
       :abilities="pokemon.abilities"
       :types="pokemon.types"
       :description="pokemon.description"
-    />-->
-    <!-- MODAL -->
-    <q-dialog v-model="modal" transition-show="slide-down" transition-hide="slide-down">
-      <q-card class="text-white">
-        <div :style="{ 'background-color': pokemon.color }">
-          <q-bar>
-            <q-btn rounded>
-              <span
-                style="align-self: center; font-size: 25px; font-weight: bold;"
-              >#{{ pokemon.id }}</span>
-            </q-btn>
-            <q-space />
-
-            <q-btn dense flat icon="close" v-close-popup>
-              <q-tooltip class="bg-white text-primary">Close</q-tooltip>
-            </q-btn>
-          </q-bar>
-
-          <q-card-section>
-            <div style="display: flex; flex-direction: column; align-items: center">
-              <div>
-                <span
-                  style="align-self: flex-start; font-size: 28px; font-weight: bold; color: rgb(31, 31, 31);"
-                >{{ pokemon.name }}</span>
-              </div>
-              <img :src="getPokemonImg(pokemon.id)" alt="image" style="max-width: 300px" />
-              <div
-                style="display: flex; flex-direction: row; margin-bottom: 10px; align-items: flex-start"
-              >
-                <InfoCard>
-                  <span style="color: rgb(189, 189, 189)">POWER:</span>
-                  <q-separator />
-                  <p
-                    style="font-size: 28px; font-weight: bold; color: rgb(255, 255, 255)"
-                  >{{ pokemon.base_experience }}</p>
-                </InfoCard>
-
-                <InfoCard>
-                  <span style="color: rgb(189, 189, 189)">ABILITIES:</span>
-                  <q-separator />
-                  <p v-for="abilt in pokemon.abilities">{{ abilt.ability.name }}</p>
-                </InfoCard>
-
-                <InfoCard>
-                  <span style="color: rgb(189, 189, 189)">TYPE(S):</span>
-                  <q-separator />
-                  <div v-for="typ in pokemon.types">
-                    <q-chip
-                      class="flat"
-                      :color="pokemon.color"
-                      text-color="white"
-                    >{{ typ.type.name }}</q-chip>
-                  </div>
-                </InfoCard>
-
-                <InfoCard>
-                  <span style="color: rgb(189, 189, 189)">INFO:</span>
-                  <q-separator />
-                  <div>
-                    <p>
-                      <span
-                        style="font-weight: 400; color: rgb(168, 168, 168); margin-right: 4px"
-                      >HEIGHT:</span>
-                      <span>{{ pokemon.height }}</span>
-                    </p>
-                    <p>
-                      <span
-                        style="font-weight: 400; color: rgb(168, 168, 168); margin-right: 4px"
-                      >WEIGHT:</span>
-                      <span>{{ pokemon.weight }}</span>
-                    </p>
-                  </div>
-                </InfoCard>
-              </div>
-              <q-btn dense style="padding: 10px 10px 0px 10px; background-color: rgb(88, 88, 88)">
-                <div
-                  style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center;"
-                >
-                  <p style="color: rgb(189, 189, 189)">DESCRIPTION:</p>
-                  <p style="color: rgb(223, 223, 223)">{{ pokemon.description }}</p>
-                </div>
-              </q-btn>
-            </div>
-          </q-card-section>
-
-          <q-card-section class="q-pt-none">
-            <q-btn
-              color="black"
-              label="ADICIONAR AO TIME"
-              style="margin-right: 10px;"
-              @click="handleAdd()"
-            />
-            <q-btn color="black" label="FECHAR" v-close-popup />
-          </q-card-section>
-        </div>
-      </q-card>
-    </q-dialog>
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, defineEmits, reactive } from "vue";
+import { ref, reactive, onBeforeMount } from "vue";
 import InfoCard from "../InfoCard/InfoCard.vue";
 import Modal from "../Modal/Modal.vue";
 import { Pokemon } from '../types';
 import api from '../../services/api';
+import PokeCard from '../PokeCard/PokeCard.vue';
 
 const modal = ref(false);
-// const team = ref<Pokemon[]>()
 let team = ref<Pokemon>()
 const pokeData = ref<Pokemon>();
 const pokemon = reactive<Pokemon>({
   id: 0,
   name: "",
   base_experience: 0,
+  pokemon_species: {
+    name: '',
+    url: '',
+  },
   height: 0,
   weight: 0,
   abilities: {
@@ -177,7 +72,7 @@ const pokemon = reactive<Pokemon>({
   description: '',
 });
 
-onMounted(() => {
+onBeforeMount(() => {
   pokemonList()
 });
 
@@ -197,7 +92,8 @@ const pokemonList = async () => {
 
 /*
 * Handle's the pokemon image render
-*/
+* todo: change to loadash
+*/ 
 function getPokemonImg(entryNumber: number): string {
   var str = "" + entryNumber;
   var pad = "000";
@@ -234,12 +130,6 @@ async function details(url: string) {
     console.log('catch erro: ', err);
   }
 };
-
-const emit = defineEmits(['clicked'])
-
-function clicked() {
-  emit("clicked");
-}
 </script>
 
 <style lang="scss" scoped>
@@ -273,25 +163,6 @@ function clicked() {
       height: 100px;
       border-radius: 12px;
       margin-right: 1.2rem;
-    }
-  }
-
-  .card-section {
-    display: flex;
-    flex-direction: column;
-    span {
-      font-weight: bold;
-      font-size: 18px;
-      color: rgb(86, 87, 86);
-    }
-    img {
-      align-self: center;
-      max-width: 200px;
-    }
-    .pokename {
-      font-size: 18px;
-      color: rgb(86, 87, 86);
-      align-self: center;
     }
   }
 }

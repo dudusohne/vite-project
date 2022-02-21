@@ -1,14 +1,14 @@
 export interface Pokemon {
     id: number;
     entry_number?: number;
-    pokemon_species?: {
-      name?: string;
-      url?: string;
+    pokemon_species: {
+      name: string;
+      url: string;
     };
     name?: string;
     color?: string;
     description?: any;
-    abilities: {
+    abilities?: {
         ability: {
             ability: {
                 name: string;
