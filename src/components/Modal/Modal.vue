@@ -22,7 +22,7 @@
                                 style="align-self: flex-start; font-size: 28px; font-weight: bold; color: rgb(31, 31, 31);"
                             >{{ props.pokemon.name }}</span>
                         </div>
-                        <img :src="props.pokemon.img" alt="image" style="max-width: 300px" />
+                        <img :src="getPokemonImg(props.pokemon.id)" alt="image" style="max-width: 300px" />
                         <div
                             style="display: flex; flex-direction: row; margin-bottom: 10px; align-items: flex-start"
                         >
@@ -108,4 +108,12 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+
+function getPokemonImg(entryNumber: number): string {
+  var str = "" + entryNumber;
+  var pad = "000";
+  const ans = pad.substring(0, pad.length - str.length) + str;
+  const url = `https://raw.githubusercontent.com/oscarcz7/poke_api/master/src/assets/pokemon/${ans}.png`;
+  return url;
+}
 </script>

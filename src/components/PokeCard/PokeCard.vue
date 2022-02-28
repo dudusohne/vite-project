@@ -3,7 +3,7 @@
         <q-card-section>
             <div class="card-section">
                 <span>{{ props.pokemon.entry_number }}</span>
-                <img :src="props.pokemon.img" alt="image" />
+                <img :src="getPokemonImg(props.pokemon.entry_number)" alt="image" />
                 <span class="pokename">
                     {{
                         props.pokemon.pokemon_species.name
@@ -25,6 +25,15 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+
+function getPokemonImg(entryNumber: number): string {
+  var str = "" + entryNumber;
+  var pad = "000";
+  const ans = pad.substring(0, pad.length - str.length) + str;
+  const url = `https://raw.githubusercontent.com/oscarcz7/poke_api/master/src/assets/pokemon/${ans}.png`;
+  return url;
+}
+
 </script>
 
 <style scoped lang="scss">

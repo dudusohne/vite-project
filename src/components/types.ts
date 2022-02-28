@@ -1,6 +1,6 @@
 export interface Pokemon {
     id: number;
-    entry_number?: number;
+    entry_number: number;
     pokemon_species: {
       name: string;
       url: string;

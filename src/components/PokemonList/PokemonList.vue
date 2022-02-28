@@ -2,20 +2,24 @@
   <div class="pokemonlist q-gutter-md">
     <div class="pokeball">
       <img src="../../assets/ash.png" alt="ash" />
-      <p v-for="t in team">{{ t }}</p>
-      <!-- <img src="../../assets/squirtle.png" alt="squirtle" /> -->
+      <!-- <p v-for="t in list">{{ t }}</p> -->
+      <PokeCard
+        v-for="(pokemon, i) in list"
+        :key="i"
+        :pokemon="pokemon"
+        :entry_number="pokemon.entry_number"
+        :pokemon_species="pokemon.pokemon_species.name.toUpperCase()"
+        @click="details(pokemon.pokemon_species.url)"
+      />
     </div>
-    <!-- POKEMON CARD -->
     <PokeCard
       v-for="(pokemon, i) in pokeData"
       :key="i"
       :pokemon="pokemon"
       :entry_number="pokemon.entry_number"
-      :img="getPokemonImg(pokemon.entry_number)"
       :pokemon_species="pokemon.pokemon_species.name.toUpperCase()"
       @click="details(pokemon.pokemon_species.url)"
     />
-    <!-- MODAL -->
     <Modal
       v-model="modal"
       :pokemon="pokemon"
@@ -27,6 +31,8 @@
       :abilities="pokemon.abilities"
       :types="pokemon.types"
       :description="pokemon.description"
+      :src="pokemon.entry_number"
+      @cliked="modal = false"
     />
   </div>
 </template>
@@ -40,11 +46,13 @@ import api from '../../services/api';
 import PokeCard from '../PokeCard/PokeCard.vue';
 
 const modal = ref(false);
+const list = reactive<Pokemon[]>([]);
 let team = ref<Pokemon>()
 const pokeData = ref<Pokemon>();
 const pokemon = reactive<Pokemon>({
   id: 0,
   name: "",
+  entry_number: 0,
   base_experience: 0,
   pokemon_species: {
     name: '',
@@ -82,6 +90,38 @@ function handleAdd() {
   console.log(team.value);
   modal.value = false;
 }
+const addNewTeam = () => {
+  list.push({
+    id: pokemon.id,
+    name: pokemon.name,
+    entry_number: pokemon.entry_number,
+    base_experience: pokemon.base_experience,
+    pokemon_species: {
+      name: pokemon.pokemon_species.name,
+      url: pokemon.pokemon_species.url,
+    },
+    height: pokemon.height,
+    weight: pokemon.weight,
+    abilities: {
+      ability: {
+        ability: {
+          name: pokemon.abilities.ability.ability.name,
+          url: pokemon.abilities.ability.ability.url,
+        }
+      }
+    },
+    types: {
+      type: {
+        type: {
+          name: pokemon.types.type.type.name,
+          url: pokemon.types.type.type.url,
+        }
+      }
+    },
+    color: pokemon.color,
+    description: pokemon.description,
+  });
+}
 /*
 * Bring all pokemons from API
 */
@@ -89,18 +129,6 @@ const pokemonList = async () => {
   const response = await api.allPokemons()
   pokeData.value = response.data.pokemon_entries;
 };
-
-/*
-* Handle's the pokemon image render
-* todo: change to loadash
-*/ 
-function getPokemonImg(entryNumber: number): string {
-  var str = "" + entryNumber;
-  var pad = "000";
-  const ans = pad.substring(0, pad.length - str.length) + str;
-  const url = `https://raw.githubusercontent.com/oscarcz7/poke_api/master/src/assets/pokemon/${ans}.png`;
-  return url;
-}
 
 /*
 * Handle's the pokemon details load/render
