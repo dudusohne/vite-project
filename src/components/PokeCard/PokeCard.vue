@@ -2,18 +2,19 @@
     <q-card light bordered class="bg-grey-3 my-card" @click="props.pokemon.clicked">
         <q-card-section>
             <div class="card-section">
-                <span>{{ props.pokemon.entry_number }}</span>
+                <div class="button-bckground">
+                     <q-btn round>
+                         <span>{{ props.pokemon.entry_number }}</span>
+                     </q-btn>
+                </div>
                 <img :src="getPokemonImg(props.pokemon.entry_number)" alt="image" />
-                <span class="pokename">
+                <p class="pokename">
                     {{
-                        props.pokemon.pokemon_species.name
+                        props.pokemon.pokemon_species.name.toUpperCase()
                     }}
-                </span>
+                </p>
             </div>
         </q-card-section>
-        <q-card-actions>
-            <q-btn color="blue" label="VER DETALHES" @click="props.pokemon.clicked" />
-        </q-card-actions>
     </q-card>
 </template>
 
@@ -27,11 +28,11 @@ interface Props {
 const props = defineProps<Props>();
 
 function getPokemonImg(entryNumber: number): string {
-  var str = "" + entryNumber;
-  var pad = "000";
-  const ans = pad.substring(0, pad.length - str.length) + str;
-  const url = `https://raw.githubusercontent.com/oscarcz7/poke_api/master/src/assets/pokemon/${ans}.png`;
-  return url;
+    var str = "" + entryNumber;
+    var pad = "000";
+    const ans = pad.substring(0, pad.length - str.length) + str;
+    const url = `https://raw.githubusercontent.com/oscarcz7/poke_api/master/src/assets/pokemon/${ans}.png`;
+    return url;
 }
 
 </script>
@@ -40,19 +41,26 @@ function getPokemonImg(entryNumber: number): string {
 .card-section {
     display: flex;
     flex-direction: column;
-    span {
-        font-weight: bold;
-        font-size: 18px;
-        color: rgb(86, 87, 86);
+    .button-bckground {
+        width: 2rem;
+        height: 2rem;
+       
+        span {
+            font-weight: bold;
+            font-size: 22px;
+            color: rgb(109, 109, 109);
+            
+        }
     }
     img {
         align-self: center;
         max-width: 200px;
     }
     .pokename {
-        font-size: 18px;
-        color: rgb(86, 87, 86);
+        font-size: 24px;
+        color: rgb(66, 66, 66);
         align-self: center;
+        font-weight: bold;
     }
 }
 </style>

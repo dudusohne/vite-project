@@ -3,7 +3,7 @@
         <q-card class="text-white">
             <div :style="{ 'background-color': props.pokemon.color }">
                 <q-bar>
-                    <q-btn rounded>
+                    <q-btn rounded :click="props.pokemon.clicked">
                         <span
                             style="align-self: center; font-size: 25px; font-weight: bold;"
                         >#{{ props.pokemon.id }}</span>
@@ -22,7 +22,11 @@
                                 style="align-self: flex-start; font-size: 28px; font-weight: bold; color: rgb(31, 31, 31);"
                             >{{ props.pokemon.name }}</span>
                         </div>
-                        <img :src="getPokemonImg(props.pokemon.id)" alt="image" style="max-width: 300px" />
+                        <img
+                            :src="getPokemonImg(props.pokemon.id)"
+                            alt="image"
+                            style="max-width: 300px"
+                        />
                         <div
                             style="display: flex; flex-direction: row; margin-bottom: 10px; align-items: flex-start"
                         >
@@ -100,6 +104,7 @@
 </template>
 
 <script setup lang="ts">
+import { defineEmits } from 'vue'
 import InfoCard from "../InfoCard/InfoCard.vue";
 import { Pokemon } from '../types';
 
@@ -110,10 +115,16 @@ interface Props {
 const props = defineProps<Props>();
 
 function getPokemonImg(entryNumber: number): string {
-  var str = "" + entryNumber;
-  var pad = "000";
-  const ans = pad.substring(0, pad.length - str.length) + str;
-  const url = `https://raw.githubusercontent.com/oscarcz7/poke_api/master/src/assets/pokemon/${ans}.png`;
-  return url;
+    var str = "" + entryNumber;
+    var pad = "000";
+    const ans = pad.substring(0, pad.length - str.length) + str;
+    const url = `https://raw.githubusercontent.com/oscarcz7/poke_api/master/src/assets/pokemon/${ans}.png`;
+    return url;
 }
+
+const emit = defineEmits<{
+  (_event: 'clicked'): void
+}>()
+
+emit('clicked')
 </script>

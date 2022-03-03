@@ -32,7 +32,7 @@
       :types="pokemon.types"
       :description="pokemon.description"
       :src="pokemon.entry_number"
-      @cliked="modal = false"
+      @clicked="handleAdd()"
     />
   </div>
 </template>
@@ -86,6 +86,7 @@ onBeforeMount(() => {
 
 function handleAdd() {
   // team.value.push(pokemon)
+  console.log('function on')
   team.value = pokemon;
   console.log(team.value);
   modal.value = false;
