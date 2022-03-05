@@ -32,7 +32,7 @@
       :types="pokemon.types"
       :description="pokemon.description"
       :src="pokemon.entry_number"
-      @clicked="handleAdd()"
+      @click="handleAdd()"
     />
   </div>
 </template>
