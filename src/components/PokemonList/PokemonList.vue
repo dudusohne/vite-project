@@ -85,7 +85,6 @@ onBeforeMount(() => {
 });
 
 function handleAdd() {
-  // team.value.push(pokemon)
   console.log('function on')
   team.value = pokemon;
   console.log(team.value);
