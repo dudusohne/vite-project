@@ -32,14 +32,13 @@
       :types="pokemon.types"
       :description="pokemon.description"
       :src="pokemon.entry_number"
-      @click="handleAdd()"
+      @clicked="handleAdd()"
     />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, onBeforeMount } from "vue";
-import InfoCard from "../InfoCard/InfoCard.vue";
 import Modal from "../Modal/Modal.vue";
 import { Pokemon } from '../types';
 import api from '../../services/api';

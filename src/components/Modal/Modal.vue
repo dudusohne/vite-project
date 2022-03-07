@@ -3,7 +3,7 @@
         <q-card class="text-white">
             <div :style="{ 'background-color': props.pokemon.color }">
                 <q-bar>
-                    <q-btn rounded :click="props.pokemon.clicked">
+                    <q-btn rounded>
                         <span
                             style="align-self: center; font-size: 25px; font-weight: bold;"
                         >#{{ props.pokemon.id }}</span>
@@ -90,12 +90,8 @@
                 </q-card-section>
 
                 <q-card-section class="q-pt-none">
-                    <q-btn
-                        color="black"
-                        label="ADICIONAR AO TIME"
-                        style="margin-right: 10px;"
-                        @click="props.pokemon.clicked"
-                    />
+                    <button @clicked="props.pokemon.clicked">button</button>
+                    <q-btn color="black" label="ADICIONAR AO TIME" style="margin-right: 10px;" />
                     <q-btn color="black" label="FECHAR" v-close-popup />
                 </q-card-section>
             </div>
@@ -123,7 +119,7 @@ function getPokemonImg(entryNumber: number): string {
 }
 
 const emit = defineEmits<{
-  (_event: 'clicked'): void
+    (_event: 'clicked'): void
 }>()
 
 emit('clicked')
