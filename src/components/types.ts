@@ -2,7 +2,7 @@ export interface Pokemon {
     id: number;
     entry_number: number;
     pokemon_species: {
-      name: string;
+      name?: string;
       url: string;
     };
     name?: string;
@@ -11,7 +11,7 @@ export interface Pokemon {
     abilities?: {
         ability: {
             ability: {
-                name: string;
+                name?: string;
                 url?: string;
             }
         };

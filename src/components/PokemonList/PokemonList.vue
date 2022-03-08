@@ -1,15 +1,15 @@
 <template>
   <div class="pokemonlist q-gutter-md">
-    <div class="pokeball">
+    <div :v-if="!!list"></div>
+    <div bind:v-else class="pokeball">
       <img src="../../assets/ash.png" alt="ash" />
-      <!-- <p v-for="t in list">{{ t }}</p> -->
-      <PokeCard
+      <TeamCard
         v-for="(pokemon, i) in list"
         :key="i"
         :pokemon="pokemon"
-        :entry_number="pokemon.entry_number"
-        :pokemon_species="pokemon.pokemon_species.name.toUpperCase()"
-        @click="details(pokemon.pokemon_species.url)"
+        :entry_number="pokemon.id"
+        :pokemon_species="pokemon.name"
+        @click="handleRemove(pokemon.id)"
       />
     </div>
     <PokeCard
@@ -32,8 +32,12 @@
       :types="pokemon.types"
       :description="pokemon.description"
       :src="pokemon.entry_number"
-      @clicked="handleAdd()"
-    />
+    >
+      <template v-slot:modalButton>
+        <q-btn color="green" label="ADICIONAR AO TIME" @click="addNewTeam()" />
+        <q-btn color="black" label="FECHAR" v-close-popup />
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -43,10 +47,10 @@ import Modal from "../Modal/Modal.vue";
 import { Pokemon } from '../types';
 import api from '../../services/api';
 import PokeCard from '../PokeCard/PokeCard.vue';
+import TeamCard from '../TeamCard/TeamCard.vue';
 
 const modal = ref(false);
 const list = reactive<Pokemon[]>([]);
-let team = ref<Pokemon>()
 const pokeData = ref<Pokemon>();
 const pokemon = reactive<Pokemon>({
   id: 0,
@@ -83,12 +87,6 @@ onBeforeMount(() => {
   pokemonList()
 });
 
-function handleAdd() {
-  console.log('function on')
-  team.value = pokemon;
-  console.log(team.value);
-  modal.value = false;
-}
 const addNewTeam = () => {
   list.push({
     id: pokemon.id,
@@ -96,31 +94,25 @@ const addNewTeam = () => {
     entry_number: pokemon.entry_number,
     base_experience: pokemon.base_experience,
     pokemon_species: {
-      name: pokemon.pokemon_species.name,
+      name: pokemon.name,
       url: pokemon.pokemon_species.url,
     },
     height: pokemon.height,
     weight: pokemon.weight,
-    abilities: {
-      ability: {
-        ability: {
-          name: pokemon.abilities.ability.ability.name,
-          url: pokemon.abilities.ability.ability.url,
-        }
-      }
-    },
-    types: {
-      type: {
-        type: {
-          name: pokemon.types.type.type.name,
-          url: pokemon.types.type.type.url,
-        }
-      }
-    },
     color: pokemon.color,
     description: pokemon.description,
   });
+  modal.value = false;
 }
+
+function handleRemove(id: number) {
+  list.map(pokemon => {
+    if (pokemon.id === id) {
+      list.splice(list.indexOf(pokemon), 1);
+    }
+  });
+}
+
 /*
 * Bring all pokemons from API
 */
@@ -175,8 +167,8 @@ async function details(url: string) {
     min-height: 100px;
     padding: 0 0 0 1.2rem;
     margin-bottom: 1rem;
-    justify-content: space-between;
-    background-color: rgba(255, 255, 255, 0.459);
+    justify-content: flex-start;
+    background-color: rgba(224, 219, 209, 0.932);
     padding: 1rem 0 1rem 0;
     z-index: 10;
 
@@ -190,6 +182,7 @@ async function details(url: string) {
       height: 100px;
       border-radius: 12px;
       margin-right: 1.2rem;
+      margin-left: 1.9rem;
     }
   }
 }

@@ -90,9 +90,9 @@
                 </q-card-section>
 
                 <q-card-section class="q-pt-none">
-                    <button @clicked="props.pokemon.clicked">button</button>
-                    <q-btn color="black" label="ADICIONAR AO TIME" style="margin-right: 10px;" />
-                    <q-btn color="black" label="FECHAR" v-close-popup />
+                    <template v-slot>
+                        <slot name="modalButton"></slot>
+                    </template>
                 </q-card-section>
             </div>
         </q-card>
