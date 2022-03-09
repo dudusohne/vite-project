@@ -3,14 +3,14 @@
         <q-card-section>
             <div class="card-section">
                 <div class="button-bckground">
-                     <q-btn round>
-                         <span>{{ props.pokemon.entry_number }}</span>
-                     </q-btn>
+                    <q-btn round>
+                        <span>{{ props.pokemon.entry_number }}</span>
+                    </q-btn>
                 </div>
                 <img :src="getPokemonImg(props.pokemon.entry_number)" alt="image" />
                 <p class="pokename">
                     {{
-                        props.pokemon.pokemon_species.name.toUpperCase()
+                        props.pokemon.pokemon_species.name?.toUpperCase()
                     }}
                 </p>
             </div>
@@ -43,12 +43,11 @@ function getPokemonImg(entryNumber: number): string {
     .button-bckground {
         width: 2rem;
         height: 2rem;
-       
+
         span {
             font-weight: bold;
             font-size: 22px;
             color: rgb(109, 109, 109);
-            
         }
     }
     img {
