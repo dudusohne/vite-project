@@ -1,6 +1,6 @@
 <template>
   <div class="pokemonlist q-gutter-md">
-    <div :v-if="!!list"></div>
+    <!-- <div :v-if="!!list"></div> -->
     <div bind:v-else class="pokeball">
       <img src="../../assets/ash.png" alt="ash" />
       <TeamCard
